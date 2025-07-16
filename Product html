@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Ayurvedic Product Catalog</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Softer, modern light background */
+            color: #2d3748; /* Darker text for better contrast */
+        }
+        /* Custom scrollbar for modal content */
+        .modal-content-scrollable::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content-scrollable::-webkit-scrollbar-track {
+            background: #e2e8f0; /* Lighter track */
+            border-radius: 10px;
+        }
+        .modal-content-scrollable::-webkit-scrollbar-thumb {
+            background: #a0aec0; /* Softer thumb */
+            border-radius: 10px;
+        }
+        .modal-content-scrollable::-webkit-scrollbar-thumb:hover {
+            background: #718096; /* Darker hover */
+        }
+
+        /* Zoom animation for modal image */
+        .modal-image-zoom {
+            transform: scale(1);
+            transition: transform 0.3s ease-out; /* Smooth transition */
+        }
+        .modal-image-zoom.zoomed {
+            transform: scale(1.05); /* Slightly larger when zoomed */
+        }
+
+        /* Custom styling for the product image container to simulate transparent background */
+        .product-image-container {
+            position: relative;
+            overflow: hidden;
+            background-color: transparent; /* Ensure no background on the container itself */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem; /* Add some padding around the image */
+        }
+
+        .product-image-container img {
+            object-fit: contain; /* Ensure the whole product is visible */
+            width: 100%;
+            height: 100%;
+            max-height: 180px; /* Adjust height as needed */
+            transition: transform 0.3s ease-in-out;
+        }
+        .group:hover .product-image-container img {
+            transform: scale(1.05); /* Subtle zoom on hover for the main image */
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <!-- Header Section -->
+    <header class="text-center mb-8 sm:mb-12">
+        <h1 class="text-3xl sm:text-4xl font-bold text-green-800 mb-2">Our Ayurvedic Product Catalog</h1>
+        <p class="text-lg sm:text-xl text-gray-700">Discover nature's wisdom for holistic well-being.</p>
+        <p class="text-md text-gray-600 mt-2">Click on any product image to learn more!</p>
+    </header>
+
+    <!-- Product Grid (Concise View) -->
+    <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <!-- Product Card Template (will be populated by JS) -->
+    </main>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col transform transition-all duration-300 scale-95 opacity-0" id="modal-content-wrapper">
+            <!-- Close Button -->
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-3xl font-bold p-2 leading-none z-10">&times;</button>
+
+            <div class="flex flex-col md:flex-row flex-grow overflow-y-auto modal-content-scrollable">
+                <!-- Product Image -->
+                <div class="md:w-1/2 p-6 flex items-center justify-center bg-gray-50 rounded-tl-xl md:rounded-bl-xl md:rounded-tr-none rounded-t-xl">
+                    <!-- Added modal-image-zoom class for animation -->
+                    <img id="modal-image" src="" alt="Product Image" class="max-h-64 md:max-h-full object-contain rounded-lg shadow-md modal-image-zoom">
+                </div>
+
+                <!-- Product Details -->
+                <div class="md:w-1/2 p-6 md:p-8 flex flex-col justify-between">
+                    <div>
+                        <h2 id="modal-name" class="text-2xl sm:text-3xl font-bold text-green-700 mb-2"></h2>
+                        <p id="modal-long-desc" class="text-gray-700 mb-4 text-justify leading-relaxed"></p>
+
+                        <div class="mb-4 bg-gray-50 p-3 rounded-lg">
+                            <h3 class="font-semibold text-gray-800 mb-1">Key Ingredients:</h3>
+                            <p id="modal-ingredients" class="text-gray-600 text-sm"></p>
+                        </div>
+
+                        <div class="mb-4 bg-gray-50 p-3 rounded-lg">
+                            <h3 class="font-semibold text-gray-800 mb-1">How to Use:</h3>
+                            <p id="modal-usage" class="text-gray-600 text-sm"></p>
+                        </div>
+
+                        <div class="mb-4 bg-gray-50 p-3 rounded-lg">
+                            <h3 class="font-semibold text-gray-800 mb-1">Precautions:</h3>
+                            <p id="modal-precautions" class="text-red-600 text-sm italic"></p>
+                        </div>
+                    </div>
+
+                    <!-- Contact/Action Button -->
+                    <div class="mt-6 text-center">
+                        <a href="https://wa.me/YOUR_WHATSAPP_NUMBER?text=I'm%20interested%20in%20your%20products!" target="_blank" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                            Inquire via WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample Product Data
+        const products = [
+            {
+                id: 'product1',
+                name: 'Digestive Bliss Churna',
+                shortDesc: 'Supports healthy digestion and gut balance.',
+                longDesc: 'A traditional Ayurvedic blend of herbs like Triphala, Ajwain, and Fennel, specifically formulated to promote optimal digestion, alleviate bloating, and maintain a healthy gut microbiome. It gently cleanses the digestive tract and enhances nutrient absorption.',
+                ingredients: 'Triphala, Ajwain, Fennel, Cumin, Rock Salt',
+                usage: 'Take 1 teaspoon with warm water after meals, twice daily. For best results, consume regularly.',
+                precautions: 'Consult your physician if pregnant, nursing, or have a pre-existing medical condition. Keep out of reach of children.',
+                image: 'https://placehold.co/400x300/f0f4f8/2d3748?text=Digestive+Churna', // Simulating transparent background
+                price: 750
+            },
+            {
+                id: 'product2',
+                name: 'Radiant Skin Oil',
+                shortDesc: 'Nourishes and rejuvenates skin for a healthy glow.',
+                longDesc: 'An exquisite Ayurvedic facial oil infused with potent herbs like Turmeric, Saffron, and Sandalwood. This luxurious oil deeply moisturizes, reduces blemishes, evens skin tone, and imparts a natural, radiant glow. Ideal for all skin types, especially dry or dull skin.',
+                ingredients: 'Sesame Oil, Turmeric, Saffron, Sandalwood, Manjistha, Licorice',
+                usage: 'Gently massage a few drops onto clean face and neck daily, preferably before bedtime. Use circular motions until absorbed.',
+                precautions: 'For external use only. Patch test before full application. Avoid direct contact with eyes. Discontinue use if irritation occurs.',
+                image: 'https://placehold.co/400x300/f0f4f8/2d3748?text=Radiant+Skin+Oil', // Simulating transparent background
+                price: 750
+            },
+            {
+                id: 'product3',
+                name: 'Calm Mind Tea',
+                shortDesc: 'Promotes relaxation and reduces stress.',
+                longDesc: 'A soothing herbal infusion crafted with adaptogenic herbs like Ashwagandha, Brahmi, and Chamomile. This tea helps calm the nervous system, reduce anxiety, and promote restful sleep. Enjoy a cup to unwind after a long day or to prepare for meditation.',
+                ingredients: 'Ashwagandha, Brahmi, Chamomile, Tulsi, Cardamom',
+                usage: 'Steep 1 tea bag in hot water for 5-7 minutes. Enjoy 1-2 times daily, especially in the evening. Can be sweetened with honey if desired.',
+                precautions: 'Consult your physician if pregnant, nursing, or on sedative medication. Store in a cool, dry place.',
+                image: 'https://placehold.co/400x300/f0f4f8/2d3748?text=Calm+Mind+Tea', // Simulating transparent background
+                price: 750
+            },
+            {
+                id: 'product4',
+                name: 'Joint Support Balm',
+                shortDesc: 'Eases joint discomfort and promotes flexibility.',
+                longDesc: 'A warming Ayurvedic balm formulated with potent herbs like Mahanarayana Oil, Gandhapura, and Eucalyptus. This balm provides targeted relief for stiff joints and muscles, improving circulation and promoting flexibility. Ideal for athletes or those experiencing occasional joint discomfort.',
+                ingredients: 'Mahanarayana Oil, Gandhapura Oil, Eucalyptus Oil, Peppermint Oil, Beeswax',
+                usage: 'Apply a small amount to affected joints and muscles, massaging gently until absorbed. Use 2-3 times daily or as needed. For external use only.',
+                precautions: 'For external use only. Do not apply on broken skin. Wash hands after use. Keep out of reach of children. Avoid contact with eyes and mucous membranes.',
+                image: 'https://placehold.co/400x300/f0f4f8/2d3748?text=Joint+Balm', // Simulating transparent background
+                price: 750
+            },
+            {
+                id: 'product5',
+                name: 'Hair Growth Elixir',
+                shortDesc: 'Strengthens hair, promotes growth, and reduces fall.',
+                longDesc: 'An potent Ayurvedic hair oil blend with Bhringraj, Amla, and Brahmi, traditionally used to nourish the scalp, strengthen hair roots, and stimulate healthy hair growth. Regular use helps reduce hair fall, prevent premature greying, and improve hair texture.',
+                ingredients: 'Coconut Oil, Bhringraj, Amla, Brahmi, Hibiscus, Neem',
+                usage: 'Massage gently into the scalp and hair, leave on for at least an hour or overnight, then wash with a mild shampoo. Use 2-3 times a week.',
+                precautions: 'For external use only. Patch test before full application. Avoid contact with eyes.',
+                image: 'https://placehold.co/400x300/f0f4f8/2d3748?text=Hair+Elixir', // Simulating transparent background
+                price: 750
+            },
+            {
+                id: 'product6',
+                name: 'Immunity Booster Capsules',
+                shortDesc: 'Enhances natural immunity and vitality.',
+                longDesc: 'Formulated with powerful Ayurvedic herbs like Guduchi, Tulsi, and Ashwagandha, these capsules are designed to fortify your body\'s natural defense mechanisms. They help improve overall vitality, combat seasonal challenges, and support a robust immune system.',
+                ingredients: 'Guduchi, Tulsi, Ashwagandha, Pippali, Ginger',
+                usage: 'Take 1 capsule twice daily with water after meals, or as directed by your healthcare practitioner.',
+                precautions: 'Consult your physician if pregnant, nursing, or have a pre-existing medical condition. Not recommended for children under 12 without medical advice.',
+                image: 'https://placehold.co/400x300/f0f4f8/2d3748?text=Immunity+Capsules', // Simulating transparent background
+                price: 750
+            }
+        ];
+
+        const mainContainer = document.querySelector('main');
+        const productModal = document.getElementById('product-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalContentWrapper = document.getElementById('modal-content-wrapper');
+
+        const modalImage = document.getElementById('modal-image');
+        const modalName = document.getElementById('modal-name');
+        const modalLongDesc = document.getElementById('modal-long-desc');
+        const modalIngredients = document.getElementById('modal-ingredients');
+        const modalUsage = document.getElementById('modal-usage');
+        const modalPrecautions = document.getElementById('modal-precautions');
+
+        // Function to create a product card
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            // Removed bg-white, shadow-lg, rounded-xl from card itself
+            card.className = 'cursor-pointer overflow-hidden transform hover:scale-105 group text-center'; // Added text-center for name
+            card.setAttribute('data-product-id', product.id);
+
+            card.innerHTML = `
+                <div class="product-image-container">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-contain">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
+                        <p class="text-white text-lg font-bold">₹${product.price}</p>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <h2 class="text-xl font-semibold text-green-700 mt-2">${product.name}</h2>
+                    <!-- Short description removed as per new design focus -->
+                </div>
+            `;
+
+            // Make the entire card (which is now primarily the image) clickable
+            card.addEventListener('click', () => openProductModal(product.id));
+            return card;
+        }
+
+        // Function to populate and open the modal
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                modalImage.src = product.image;
+                modalImage.alt = product.name;
+                modalName.textContent = product.name;
+                modalLongDesc.textContent = product.longDesc;
+                modalIngredients.textContent = product.ingredients;
+                modalUsage.textContent = product.usage;
+                modalPrecautions.textContent = product.precautions;
+                
+                productModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling background
+
+                // Trigger modal entry animation
+                setTimeout(() => {
+                    modalContentWrapper.classList.remove('scale-95', 'opacity-0');
+                    modalContentWrapper.classList.add('scale-100', 'opacity-100');
+                    // Trigger image zoom animation after modal is visible
+                    modalImage.classList.add('zoomed');
+                }, 10); // Small delay to ensure modal is rendered
+            }
+        }
+
+        // Function to close the modal
+        closeModalBtn.addEventListener('click', () => {
+            modalContentWrapper.classList.remove('scale-100', 'opacity-100');
+            modalContentWrapper.classList.add('scale-95', 'opacity-0');
+            modalImage.classList.remove('zoomed'); // Remove zoom class
+
+            // Hide modal after animation completes
+            setTimeout(() => {
+                productModal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+            }, 300); // Match transition duration
+        });
+
+        // Close modal when clicking outside of it
+        productModal.addEventListener('click', (event) => {
+            if (event.target === productModal) {
+                closeModalBtn.click(); // Use the close button's logic
+            }
+        });
+
+        // Initialize: Render all product cards
+        products.forEach(product => {
+            mainContainer.appendChild(createProductCard(product));
+        });
+    </script>
+</body>
+</html>
