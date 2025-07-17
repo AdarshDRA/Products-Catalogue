@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Ayurvedic Product Catalog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #2d3748;
+        }
+        .modal-content-scrollable::-webkit-scrollbar { width: 8px; }
+        .modal-content-scrollable::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+        .modal-content-scrollable::-webkit-scrollbar-thumb { background: #a0aec0; border-radius: 10px; }
+        .modal-content-scrollable::-webkit-scrollbar-thumb:hover { background: #718096; }
+        .modal-image-zoom { transition: transform 0.3s ease-out, opacity 0.3s ease-in-out; }
+        .modal-image-zoom.zoomed { transform: scale(1.05); }
+        .modal-image-zoom.fade-out { opacity: 0; }
+        .modal-image-zoom.fade-in { opacity: 1; }
+        .product-image-container {
+            position: relative;
+            overflow: hidden;
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            min-height: 250px;
+        }
+        .product-image-container img {
+            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            max-height: 220px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .group:hover .product-image-container img { transform: scale(1.05); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .product-card-animate { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
+        .animated-button { transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; }
+        .animated-button:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+        .animated-button:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+        .modal-image-pane {
+            position: sticky; top: 0; height: 100%; display: flex; align-items: center; justify-content: center;
+            background-color: #1a202c; border-radius: 0.75rem 0 0 0.75rem; overflow: hidden; padding: 2rem;
+        }
+        @media (max-width: 767px) {
+            .modal-image-pane {
+                position: relative; height: auto; min-height: 250px; border-radius: 0.75rem 0.75rem 0 0;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <header class="text-center mb-8 sm:mb-12">
+        <h1 class="text-3xl sm:text-4xl font-bold" style="color: #c7993b;">Our Luxury Wellness Collection</h1>
+        <p class="text-lg sm:text-xl text-gray-700">Ancient Wisdom. Modern Elegance.</p>
+        <p class="text-md text-gray-600 mt-2">Click on any product to explore.</p>
+    </header>
+
+    <main class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto"></main>
+
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col transform transition-all duration-300 scale-95 opacity-0" id="modal-content-wrapper">
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl font-bold p-2 leading-none z-20 transition-all duration-200 hover:rotate-90 hover:scale-125">&times;</button>
+            <div class="flex flex-col md:flex-row flex-grow overflow-y-auto">
+                <div class="md:w-1/2 modal-image-pane">
+                    <img id="modal-image" src="" alt="Product Image" class="max-h-full object-contain rounded-lg modal-image-zoom">
+                </div>
+                <div class="md:w-1/2 p-6 md:p-8 flex flex-col justify-between overflow-y-auto modal-content-scrollable" id="modal-details-scrollable">
+                    <div>
+                        <h2 id="modal-name" class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2"></h2>
+                        <div id="modal-description-section" class="mb-4">
+                            <p id="modal-long-desc" class="text-gray-700 text-justify leading-relaxed"></p>
+                        </div>
+                        <div id="modal-ingredients-section" class="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                            <h3 class="font-semibold text-gray-800 mb-1">Key Ingredients:</h3>
+                            <p id="modal-ingredients" class="text-gray-600 text-sm"></p>
+                        </div>
+                        <div id="modal-usage-section" class="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                            <h3 class="font-semibold text-gray-800 mb-1">How to Use:</h3>
+                            <p id="modal-usage" class="text-gray-600 text-sm"></p>
+                        </div>
+                        <div id="modal-precautions-section" class="mb-4 bg-red-50 p-3 rounded-lg border border-red-200">
+                            <h3 class="font-semibold text-red-800 mb-1">Precautions:</h3>
+                            <p id="modal-precautions" class="text-red-700 text-sm"></p>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <a href="https://wa.me/YOUR_WHATSAPP_NUMBER?text=I'm%20interested%20in%20your%20products!" target="_blank" class="inline-block text-white font-bold py-3 px-8 rounded-full shadow-lg animated-button" style="background-color: #b3862b; hover:background-color: #c7993b;">
+                            Inquire via WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            {
+                id: 'product1',
+                name: 'Digestive Bliss Churna',
+                longDesc: 'A traditional Ayurvedic blend of herbs like Triphala, Ajwain, and Fennel, specifically formulated to promote optimal digestion, alleviate bloating, and maintain a healthy gut microbiome. It gently cleanses the digestive tract and enhances nutrient absorption.',
+                ingredients: 'Triphala, Ajwain, Fennel, Cumin, Rock Salt',
+                usage: 'Take 1 teaspoon with warm water after meals, twice daily. For best results, consume regularly.',
+                precautions: 'Consult your physician if pregnant, nursing, or have a pre-existing medical condition. Keep out of reach of children.',
+                images: [
+                    './images/30ml-black-matt-square-bottle-500x500.png',
+                    './images/30ml-black-matt-square-bottle-500x500.png',
+                    './images/30ml-black-matt-square-bottle-500x500.png'
+                ],
+                price: 750
