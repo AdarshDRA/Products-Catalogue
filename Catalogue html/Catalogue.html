@@ -3,118 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Ayurvedic Product Catalog</title>
+    <title>Doctor Rekha Ayurveda - Official Catalog</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
-            color: #2d3748;
-        }
-        .modal-content-scrollable::-webkit-scrollbar { width: 8px; }
-        .modal-content-scrollable::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
-        .modal-content-scrollable::-webkit-scrollbar-thumb { background: #a0aec0; border-radius: 10px; }
-        .modal-content-scrollable::-webkit-scrollbar-thumb:hover { background: #718096; }
-        .modal-image-zoom { transition: transform 0.3s ease-out, opacity 0.3s ease-in-out; }
-        .modal-image-zoom.zoomed { transform: scale(1.05); }
-        .modal-image-zoom.fade-out { opacity: 0; }
-        .modal-image-zoom.fade-in { opacity: 1; }
-        .product-image-container {
-            position: relative;
-            overflow: hidden;
-            background-color: transparent;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-            min-height: 250px;
-        }
-        .product-image-container img {
-            object-fit: contain;
-            width: 100%;
-            height: 100%;
-            max-height: 220px;
-            transition: transform 0.3s ease-in-out;
-        }
-        .group:hover .product-image-container img { transform: scale(1.05); }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .product-card-animate { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
-        .animated-button { transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; }
-        .animated-button:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
-        .animated-button:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
-        .modal-image-pane {
-            position: sticky; top: 0; height: 100%; display: flex; align-items: center; justify-content: center;
-            background-color: #1a202c; border-radius: 0.75rem 0 0 0.75rem; overflow: hidden; padding: 2rem;
-        }
-        @media (max-width: 767px) {
-            .modal-image-pane {
-                position: relative; height: auto; min-height: 250px; border-radius: 0.75rem 0.75rem 0 0;
-            }
-        }
+        body { font-family: 'Poppins', sans-serif; background-color: #FFFDF5; color: #2d3748; }
+        h1, h2, h3, .font-serif { font-family: 'Lora', serif; }
+        .sunflower-gradient { background: linear-gradient(135deg, #fde047, #facc15); }
+        /* Custom Swiper Styles for the Kits Carousel */
+        .kit-swiper .swiper-button-next, .kit-swiper .swiper-button-prev { color: #84cc16; }
+        .kit-swiper .swiper-button-next:hover, .kit-swiper .swiper-button-prev:hover { transform: scale(1.1); color: #a3e635; }
+        .kit-swiper .swiper-slide { height: auto; display: flex; justify-content: center; } /* Ensure slides are centered */
     </style>
 </head>
-<body class="p-4 sm:p-8">
+<body class="antialiased">
 
-    <header class="text-center mb-8 sm:mb-12">
-        <h1 class="text-3xl sm:text-4xl font-bold" style="color: #c7993b;">Our Luxury Wellness Collection</h1>
-        <p class="text-lg sm:text-xl text-gray-700">Ancient Wisdom. Modern Elegance.</p>
-        <p class="text-md text-gray-600 mt-2">Click on any product to explore.</p>
+    <header class="text-center pt-12 pb-6">
+        <h1 class="text-4xl md:text-5xl font-bold text-green-900 mb-2">Doctor Rekha Ayurveda</h1>
+        <p class="text-lg text-gray-600">Rooted in Tradition. Perfected for You.</p>
     </header>
 
-    <main class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto"></main>
+    <section class="sunflower-gradient text-green-900 shadow-sm py-4">
+        <div class="swiper top-banner-swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide text-center text-base md:text-lg font-semibold"><p>Nature's Answer to Radiant, Healthy Skin.</p></div>
+                <div class="swiper-slide text-center text-base md:text-lg font-semibold"><p>🌿 100% Organic, Sustainably Sourced Ingredients 🌿</p></div>
+                <div class="swiper-slide text-center text-base md:text-lg font-semibold"><p>🌻 Free Shipping on Orders Above INR 2000! 🌻</p></div>
+            </div>
+        </div>
+    </section>
 
-    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col transform transition-all duration-300 scale-95 opacity-0" id="modal-content-wrapper">
-            <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl font-bold p-2 leading-none z-20 transition-all duration-200 hover:rotate-90 hover:scale-125">&times;</button>
-            <div class="flex flex-col md:flex-row flex-grow overflow-y-auto">
-                <div class="md:w-1/2 modal-image-pane">
-                    <img id="modal-image" src="" alt="Product Image" class="max-h-full object-contain rounded-lg modal-image-zoom">
-                </div>
-                <div class="md:w-1/2 p-6 md:p-8 flex flex-col justify-between overflow-y-auto modal-content-scrollable" id="modal-details-scrollable">
-                    <div>
-                        <h2 id="modal-name" class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2"></h2>
-                        <div id="modal-description-section" class="mb-4">
-                            <p id="modal-long-desc" class="text-gray-700 text-justify leading-relaxed"></p>
-                        </div>
-                        <div id="modal-ingredients-section" class="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                            <h3 class="font-semibold text-gray-800 mb-1">Key Ingredients:</h3>
-                            <p id="modal-ingredients" class="text-gray-600 text-sm"></p>
-                        </div>
-                        <div id="modal-usage-section" class="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                            <h3 class="font-semibold text-gray-800 mb-1">How to Use:</h3>
-                            <p id="modal-usage" class="text-gray-600 text-sm"></p>
-                        </div>
-                        <div id="modal-precautions-section" class="mb-4 bg-red-50 p-3 rounded-lg border border-red-200">
-                            <h3 class="font-semibold text-red-800 mb-1">Precautions:</h3>
-                            <p id="modal-precautions" class="text-red-700 text-sm"></p>
-                        </div>
+    <main class="py-16 space-y-24">
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-green-900 font-serif">This Month's Most-Loved</h2>
+            <div class="space-y-16 md:space-y-24">
+                <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16">
+                    <div class="w-full md:w-1/2 rounded-xl bg-yellow-50 aspect-square flex items-center justify-center border hover:shadow-xl transition-all duration-300">
+                        <img src="https://placehold.co/500x500/FFFDF5/facc15?text=Bakuchi+Serum" alt="Bakuchi Serum" class="w-3/4 h-3/4 object-contain">
                     </div>
-                    <div class="mt-6 text-center">
-                        <a href="https://wa.me/YOUR_WHATSAPP_NUMBER?text=I'm%20interested%20in%20your%20products!" target="_blank" class="inline-block text-white font-bold py-3 px-8 rounded-full shadow-lg animated-button" style="background-color: #b3862b; hover:background-color: #c7993b;">
-                            Inquire via WhatsApp
-                        </a>
+                    <div class="w-full md:w-1/2 text-center md:text-left">
+                        <p class="text-sm font-semibold text-yellow-500 tracking-wider">TOP SELLER</p>
+                        <h3 class="text-4xl font-bold text-green-900 mt-1">Bakuchi Serum</h3>
+                        <p class="mt-4 text-lg text-gray-600 leading-relaxed">Rejuvenate naturally with our potent Bakuchi Serum. It visibly reduces wrinkles and restores a youthful glow to your skin. A natural retinol alternative, it boosts collagen and promotes cell renewal.</p>
+                        <button class="bg-yellow-400 text-green-900 font-bold py-3 px-8 rounded-full hover:bg-yellow-300 hover:shadow-lg transform hover:scale-105 transition-all mt-8">Explore The Serum</button>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16">
+                    <div class="w-full md:w-1/2 rounded-xl bg-yellow-50 aspect-square flex items-center justify-center border hover:shadow-xl transition-all duration-300">
+                        <img src="https://placehold.co/500x500/FFFDF5/facc15?text=Glow+Serum" alt="Glow Serum" class="w-3/4 h-3/4 object-contain">
+                    </div>
+                    <div class="w-full md:w-1/2 text-center md:text-left">
+                        <p class="text-sm font-semibold text-yellow-500 tracking-wider">TOP SELLER</p>
+                        <h3 class="text-4xl font-bold text-green-900 mt-1">Glow Serum</h3>
+                        <p class="mt-4 text-lg text-gray-600 leading-relaxed">Our iconic Glow Serum is the essential final step for unparalleled radiance. It deeply nourishes, combats dullness, and leaves your skin with a flawless, healthy finish.</p>
+                        <button class="bg-yellow-400 text-green-900 font-bold py-3 px-8 rounded-full hover:bg-yellow-300 hover:shadow-lg transform hover:scale-105 transition-all mt-8">Discover Your Glow</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+
+        <section class="text-center bg-lime-50/70 py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl md:text-5xl font-bold text-green-900 font-serif">Unveiling Our Latest Creation</h2>
+                <p class="max-w-2xl mx-auto mt-4 text-lg text-gray-600">Relaunched by popular demand, our Triphala Face Wash is back to transform your skincare routine.</p>
+                <div class="max-w-sm mx-auto bg-white rounded-2xl shadow-2xl p-8 mt-12 text-center border">
+                    <span class="absolute top-6 right-6 bg-yellow-400 text-green-900 text-xs font-bold px-2 py-1 rounded-full">100% ORGANIC</span>
+                    <img src="https://placehold.co/400x400/FFFDF5/a3e635?text=Triphala+Face+Wash" alt="Triphala Face Wash" class="mx-auto h-52 w-52 object-contain">
+                    <h3 class="text-3xl font-bold text-green-900 mt-6">Triphala Face Wash</h3>
+                    <p class="mt-4 text-gray-600">This antimicrobial formula is excellent for acne and other common skin issues. Use 2-3 times a day for acne-prone skin.</p>
+                    <button class="bg-lime-400 text-lime-900 font-bold py-3 px-8 rounded-full hover:bg-lime-300 transition-colors mt-8">DM to Order</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-4xl md:text-5xl font-bold text-green-900 font-serif">Our Curated Kits</h2>
+                <p class="max-w-2xl mx-auto mt-4 text-lg text-gray-600">Experience enhanced benefits with our combos, designed to work in synergy.</p>
+            </div>
+            <div class="swiper kit-swiper relative mt-16">
+                <div class="swiper-wrapper pb-12">
+                    <div class="swiper-slide">
+                        <div class="p-8 bg-white rounded-2xl border shadow-lg w-full">
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
+                                <div>
+                                    <div class="bg-yellow-50 rounded-full w-28 h-28 mx-auto flex items-center justify-center border"><img src="https://placehold.co/200x200/FFFDF5/facc15?text=Pain+Relief+Oil" class="w-20 h-20 object-contain"></div>
+                                    <h4 class="font-bold text-green-900 mt-2">Pain Relief Oil</h4>
+                                </div>
+                                <div class="text-4xl font-thin text-yellow-500 mx-4">+</div>
+                                <div>
+                                    <div class="bg-yellow-50 rounded-full w-28 h-28 mx-auto flex items-center justify-center border"><img src="https://placehold.co/200x200/FFFDF5/facc15?text=Podi+Kizhi" class="w-20 h-20 object-contain"></div>
+                                    <h4 class="font-bold text-green-900 mt-2">Podi Kizhi</h4>
+                                </div>
+                                <div class="w-full sm:w-auto mt-6 sm:mt-0 sm:ml-6 bg-lime-50 p-6 rounded-xl border-2 border-lime-300">
+                                    <h3 class="text-xl font-bold text-lime-900">Relief Combo</h3>
+                                    <p class="text-lg text-lime-800 font-semibold">INR 1200</p>
+                                    <button class="bg-lime-400 text-lime-900 text-sm font-bold py-2 px-4 rounded-full mt-2">Get Kit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                         <div class="p-8 bg-white rounded-2xl border shadow-lg w-full">
+                             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
+                                <div>
+                                    <div class="bg-yellow-50 rounded-full w-28 h-28 mx-auto flex items-center justify-center border"><img src="https://placehold.co/200x200/FFFDF5/facc15?text=Shampoo" class="w-20 h-20 object-contain"></div>
+                                    <h4 class="font-bold text-green-900 mt-2">Anti-Hairfall Shampoo</h4>
+                                </div>
+                                <div class="text-4xl font-thin text-yellow-500 mx-4">+</div>
+                                <div>
+                                    <div class="bg-yellow-50 rounded-full w-28 h-28 mx-auto flex items-center justify-center border"><img src="https://placehold.co/200x200/FFFDF5/facc15?text=Hair+Oil" class="w-20 h-20 object-contain"></div>
+                                    <h4 class="font-bold text-green-900 mt-2">Hair Growth Oil</h4>
+                                </div>
+                                <div class="w-full sm:w-auto mt-6 sm:mt-0 sm:ml-6 bg-lime-50 p-6 rounded-xl border-2 border-lime-300">
+                                    <h3 class="text-xl font-bold text-lime-900">Hair Care Duo</h3>
+                                    <p class="text-lg text-lime-800 font-semibold">INR 1950</p>
+                                    <button class="bg-lime-400 text-lime-900 text-sm font-bold py-2 px-4 rounded-full mt-2">Get Kit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="swiper-slide">
+                        <div class="p-8 bg-white rounded-2xl border shadow-lg w-full">
+                             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
+                                <div>
+                                    <div class="bg-yellow-50 rounded-full w-28 h-28 mx-auto flex items-center justify-center border"><img src="https://placehold.co/200x200/FFFDF5/facc15?text=Incense" class="w-20 h-20 object-contain"></div>
+                                    <h4 class="font-bold text-green-900 mt-2">Aparajitha Incense</h4>
+                                </div>
+                                <div class="text-4xl font-thin text-yellow-500 mx-4">+</div>
+                                <div>
+                                    <div class="bg-yellow-50 rounded-full w-28 h-28 mx-auto flex items-center justify-center border"><img src="https://placehold.co/200x200/FFFDF5/facc15?text=Camphor+Oil" class="w-20 h-20 object-contain"></div>
+                                    <h4 class="font-bold text-green-900 mt-2">Camphor Oil</h4>
+                                </div>
+                                <div class="w-full sm:w-auto mt-6 sm:mt-0 sm:ml-6 bg-lime-50 p-6 rounded-xl border-2 border-lime-300">
+                                    <h3 class="text-xl font-bold text-lime-900">Monsoon Kit</h3>
+                                    <p class="text-lg text-lime-800 font-semibold">Special Offer</p>
+                                    <button class="bg-lime-400 text-lime-900 text-sm font-bold py-2 px-4 rounded-full mt-2">Get Kit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-green-900 font-serif">Explore The Full Collection</h2>
+            <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                <div class="break-inside-avoid bg-white p-5 rounded-xl border transition-all hover:shadow-2xl hover:-translate-y-1"><div class="bg-yellow-50 rounded-lg aspect-square flex items-center justify-center"><img src="https://placehold.co/400x400/FFFDF5/facc15?text=Glow+Face+Pack" class="w-3/4 h-3/4 object-contain"></div><h3 class="mt-4 text-xl font-bold text-green-900">Glow Face Pack</h3><p class="text-sm text-gray-500">INR 460 for 100g</p></div>
+                <div class="break-inside-avoid bg-white p-5 rounded-xl border transition-all hover:shadow-2xl hover:-translate-y-1"><div class="bg-yellow-50 rounded-lg aspect-[4/3] flex items-center justify-center"><img src="https://placehold.co/400x300/FFFDF5/facc15?text=Health+Mix" class="w-3/4 h-3/4 object-contain"></div><h3 class="mt-4 text-xl font-bold text-green-900">Health Mix</h3><p class="text-sm text-gray-500">INR 300 for 500g</p></div>
+                <div class="break-inside-avoid bg-white p-5 rounded-xl border transition-all hover:shadow-2xl hover:-translate-y-1"><div class="bg-yellow-50 rounded-lg aspect-[3/4] flex items-center justify-center"><img src="https://placehold.co/300x400/FFFDF5/facc15?text=Baby+Oil" class="w-3/4 h-3/4 object-contain"></div><h3 class="mt-4 text-xl font-bold text-green-900">Baby Oil</h3><p class="text-sm text-gray-500">INR 1050 for 200ml</p></div>
+                <div class="break-inside-avoid bg-white p-5 rounded-xl border transition-all hover:shadow-2xl hover:-translate-y-1"><div class="bg-yellow-50 rounded-lg aspect-[1/1] flex items-center justify-center"><img src="https://placehold.co/400x400/FFFDF5/facc15?text=Cleansing+Scrub" class="w-3/4 h-3/4 object-contain"></div><h3 class="mt-4 text-xl font-bold text-green-900">Cleansing Scrub</h3><p class="text-sm text-gray-500">INR 450 for 100g</p></div>
+                <div class="break-inside-avoid bg-white p-5 rounded-xl border transition-all hover:shadow-2xl hover:-translate-y-1"><div class="bg-yellow-50 rounded-lg aspect-[4/3] flex items-center justify-center"><img src="https://placehold.co/400x300/FFFDF5/facc15?text=Herbal+Tooth+Powder" class="w-3/4 h-3/4 object-contain"></div><h3 class="mt-4 text-xl font-bold text-green-900">Herbal Tooth Powder</h3><p class="text-sm text-gray-500">INR 350 for 100g</p></div>
+                <div class="break-inside-avoid bg-white p-5 rounded-xl border transition-all hover:shadow-2xl hover:-translate-y-1"><div class="bg-yellow-50 rounded-lg aspect-[1/1] flex items-center justify-center"><img src="https://placehold.co/400x400/FFFDF5/facc15?text=Triphala+Powder" class="w-3/4 h-3/4 object-contain"></div><h3 class="mt-4 text-xl font-bold text-green-900">Triphala Powder</h3><p class="text-sm text-gray-500">INR 530 for 350g</p></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center p-10 mt-16 border-t">
+        <p class="text-gray-500">&copy; 2025 Doctor Rekha Ayurveda. All Rights Reserved. Crafted with care in Kochi, Kerala.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
-        const products = [
-            {
-                id: 'product1',
-                name: 'Digestive Bliss Churna',
-                longDesc: 'A traditional Ayurvedic blend of herbs like Triphala, Ajwain, and Fennel, specifically formulated to promote optimal digestion, alleviate bloating, and maintain a healthy gut microbiome. It gently cleanses the digestive tract and enhances nutrient absorption.',
-                ingredients: 'Triphala, Ajwain, Fennel, Cumin, Rock Salt',
-                usage: 'Take 1 teaspoon with warm water after meals, twice daily. For best results, consume regularly.',
-                precautions: 'Consult your physician if pregnant, nursing, or have a pre-existing medical condition. Keep out of reach of children.',
-                images: [
-                    './images/30ml-black-matt-square-bottle-500x500.png',
-                    './images/30ml-black-matt-square-bottle-500x500.png',
-                    './images/30ml-black-matt-square-bottle-500x500.png'
-                ],
-                price: 750
+        // Initialize Top Banner Swiper
+        const topBannerSwiper = new Swiper('.top-banner-swiper', {
+            loop: true,
+            effect: 'fade',
+            fadeEffect: { crossFade: true },
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+        });
+
+        // Initialize Kits Swiper
+        const kitSwiper = new Swiper('.kit-swiper', {
+            loop: true,
+            slidesPerView: 1, // Show one kit at a time
+            spaceBetween: 30,
+            centeredSlides: true, // Center the active kit
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    </script>
+
+</body>
+</html>
